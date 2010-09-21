@@ -183,24 +183,26 @@ class PhoneNumber
         if string[0].chr == '+'
           dialout_prefix = '+'
         end
-
-        for prefix in prefixes do
-          regexp = Regexp.escape(prefix)
-          match_str = string
-          
-          # we have matching wild cards
-          if(prefix[/X/] && string =~ Regexp.new("^#{Regexp.escape(prefix.delete('X '))}"))
-            regexp.gsub!(/X/, "[0-9]{0,1}")
-            match_str = format(string[prefix.scan(/[0-9]/).size, prefix.count('X')], prefix)
-            prefix    = match_str
-          end
-          
-          if(match_str =~ Regexp.new("^#{regexp}"))
-            dialout_prefix = prefix
-            break
-          end
+		
+		if prefixes
+			for prefix in prefixes do
+			  regexp = Regexp.escape(prefix)
+			  match_str = string
+			  
+			  # we have matching wild cards
+			  if(prefix[/X/] && string =~ Regexp.new("^#{Regexp.escape(prefix.delete('X '))}"))
+				regexp.gsub!(/X/, "[0-9]{0,1}")
+				match_str = format(string[prefix.scan(/[0-9]/).size, prefix.count('X')], prefix)
+				prefix    = match_str
+			  end
+			  
+			  if(match_str =~ Regexp.new("^#{regexp}"))
+				dialout_prefix = prefix
+				break
+			  end
+			end
         end
-        
+		
         dialout_prefix
       end
       
