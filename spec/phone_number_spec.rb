@@ -37,4 +37,10 @@ describe PhoneNumber do
     end
   end
   
+  describe "using a phone number that isn't recognized" do
+    it "does not blow up" do
+      # Nigerian phone numbers are hard. Let's go shopping
+      PhoneNumber.new("+234 80312345").to_s.should == "+234 80312345"
+    end
+  end
 end
